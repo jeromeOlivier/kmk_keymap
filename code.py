@@ -2,7 +2,7 @@ import board # type: ignore
 
 # keyboard
 from kmk.kmk_keyboard import KMKKeyboard # type: ignore
-from kmk.keys import KC # type: ignore
+from kmk.keys import KC, make_key # type: ignore
 from kmk.scanners import DiodeOrientation # type: ignore
 keyboard = KMKKeyboard()
 
@@ -26,15 +26,12 @@ from kmk.modules.combos import Combos, Chord # type: ignore
 combos = Combos()
 keyboard.modules.append(combos)
 
-combos.combo_term = 50
+combos.combo_term = 100
 
 # media
 from kmk.extensions.media_keys import MediaKeys # type: ignore
 mediaKeys = MediaKeys()
 keyboard.extensions.append(mediaKeys)
-
-# modmorphs
-from kmk.macros.simple import kc as MOD # type: ignore
 
 # board definition
 keyboard.col_pins = (board.GP7, board.GP6, board.GP5, board.GP4, board.GP3, board.GP28, board.GP27, board.GP26, board.GP22, board.GP20)
@@ -143,10 +140,44 @@ combos.combos = [
     Chord((KC.U, KC.Y), KC.BSLASH),
     Chord((KC.C, FUND), KC.TAB),
     Chord((NUM3, DELT), BSPC),
+    Chord((LSFT, BSPC), DELT),
 ]
 
-# modmorphs
-ERAS = MOD(BSPC, LSFT, DELT)
+mods_before_modmorph = set()
+def modmorph(names = {'DUMMY_KEY',}, default_kc = NONE, morphed_kc = NONE, triggers = {LSFT, RSFT}):
+    def _pressed(key, state, KC, *args, **kwargs):
+        global mods_before_modmorph
+        mods_before_modmorph = triggers.intersection(state.keys_pressed)
+        # if a trigger is held, morph key
+        if mods_before_modmorph:
+            state._send_hid()
+            for mod_kc in mods_before_modmorph:
+                # discard triggering mods so morphed key is unaffected by them
+                state.keys_pressed.discard(mod_kc)
+            state.keys_pressed.add(morphed_kc)
+            state.hid_pending = True
+            return state
+        # else return default keycode
+        state.keys_pressed.add(default_kc)
+        state.hid_pending = True
+        return state
+    def _released(key, state, KC, *args, **kwargs):
+        if {morphed_kc,}.intersection(state.keys_pressed):
+            state.keys_pressed.discard(morphed_kc)
+            for mod_kc in mods_before_modmorph:
+                # re-add previously discarded shift so normal typing isn't impacted
+                state.keys_pressed.add(mod_kc)
+        else:
+            state.keys_pressed.discard(default_kc)
+        state.hid_pending = True
+        return state
+    modmorph_key = make_key(names=names, on_press=_pressed,
+                            on_release=_released)
+    return modmorph_key
+
+modmorph({'ERAS'}, BSPC, DELT)
+
+ERAS = KC.ERAS
 
 keyboard.keymap = [
     # Alphas
