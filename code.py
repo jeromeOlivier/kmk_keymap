@@ -26,16 +26,36 @@ from kmk.modules.combos import Combos, Chord # type: ignore
 combos = Combos()
 keyboard.modules.append(combos)
 
-combos.combo_term = 100
+combos.combo_term = 500
 
 # media
 from kmk.extensions.media_keys import MediaKeys # type: ignore
 mediaKeys = MediaKeys()
 keyboard.extensions.append(mediaKeys)
 
+C0 = board.GP7
+C1 = board.GP6
+C2 = board.GP5
+C3 = board.GP4
+C4 = board.GP3
+C5 = board.GP28
+C6 = board.GP27
+C7 = board.GP26
+C8 = board.GP22
+C9 = board.GP20
+
+R0 = board.GP2
+R1 = board.GP8
+R2 = board.GP9
+R3 = board.GP12
+R4 = board.GP29
+R5 = board.GP23
+R6 = board.GP21
+R7 = board.GP16
+
 # board definition
-keyboard.col_pins = (board.GP7, board.GP6, board.GP5, board.GP4, board.GP3, board.GP28, board.GP27, board.GP26, board.GP22, board.GP20)
-keyboard.row_pins = (board.GP2, board.GP8, board.GP9, board.GP12, board.GP29, board.GP23, board.GP21, board.GP16,)
+keyboard.col_pins = [C0, C1, C2, C3, C4, C5, C6, C7, C8, C9]
+keyboard.row_pins = [R0, R1, R2, R3, R4, R5, R6, R7]
 keyboard.diode_orientation = DiodeOrientation.COL2ROW
 
 # keycode abbreviations
@@ -144,7 +164,7 @@ combos.combos = [
 ]
 
 mods_before_modmorph = set()
-def modmorph(names = {'DUMMY_KEY',}, default_kc = NONE, morphed_kc = NONE, triggers = {LSFT, RSFT}):
+def MOD(names = {'DUMMY_KEY',}, default_kc = NONE, morphed_kc = NONE, triggers = {LSFT, RSFT}):
     def _pressed(key, state, KC, *args, **kwargs):
         global mods_before_modmorph
         mods_before_modmorph = triggers.intersection(state.keys_pressed)
@@ -175,7 +195,7 @@ def modmorph(names = {'DUMMY_KEY',}, default_kc = NONE, morphed_kc = NONE, trigg
                             on_release=_released)
     return modmorph_key
 
-modmorph({'ERAS'}, BSPC, DELT)
+MOD({'ERAS'}, BSPC, DELT)
 
 ERAS = KC.ERAS
 
