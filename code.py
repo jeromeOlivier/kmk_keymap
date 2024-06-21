@@ -76,7 +76,7 @@ SEMI = KC.SCOLON
 SLAS = KC.SLASH
 PERI = KC.DOT
 BSPC = KC.BSPC
-DELT = KC.DEL
+DELE = KC.DEL
 CAPS = KC.CAPS
 ESCP = KC.ESCAPE
 NONE = KC.NO
@@ -129,38 +129,38 @@ FUNC = KC.MO(3)
 SYMB = KC.MO(4)
 TRNS = KC.TRNS
 
-# hold taps
+# hold taps (HOME ROW MOD)
 ACTL = KC.HT(KC.A, LCTL)
 RALT = KC.HT(KC.R, LALT)
 SCMD = KC.HT(KC.S, LCMD)
 TSFT = KC.HT(KC.T, LSFT)
 
-SHTN = KC.HT(KC.N, RSFT)
-CMDE = KC.HT(KC.E, RCMD)
-ALTI = KC.HT(KC.I, RALT)
-CTLO = KC.HT(KC.O, RCTL)
+NSFT = KC.HT(KC.N, RSFT)
+ECMD = KC.HT(KC.E, RCMD)
+IALT = KC.HT(KC.I, RALT)
+OCTL = KC.HT(KC.O, RCTL)
 
 SPCN = KC.HT(SPAC, NAVI)
 FUND = KC.HT(KC.D, FUNC)
 
 # combos
 combos.combos = [
-    Chord((FUND, SCMD), KC.LEFT_PAREN),
-    Chord((TSFT, KC.F), KC.LCBR),
-    Chord((TSFT, KC.W), KC.LBRC),
-    Chord((TSFT, KC.Q), KC.LABK),
-    Chord((KC.H, CMDE), KC.RIGHT_PAREN),
-    Chord((SHTN, KC.U), KC.RCBR),
-    Chord((SHTN, KC.Y), KC.RBRC),
-    Chord((SHTN, SEMI), KC.RABK),
-    Chord((KC.Q, KC.W), KC.GRAVE),
-    Chord((KC.W, KC.F), KC.MINUS),
-    Chord((KC.F, KC.P), KC.EQUAL),
-    Chord((KC.L, KC.U), KC.QUOTE),
-    Chord((KC.U, KC.Y), KC.BSLASH),
-    Chord((KC.C, FUND), KC.TAB),
-    Chord((NUM3, DELT), BSPC),
-    Chord((LSFT, BSPC), DELT),
+    # LEFT HAND
+    Chord((FUND, KC.V), KC.LEFT_PAREN),
+    Chord((TSFT, KC.G), KC.LBRC),
+    Chord((KC.P, KC.B), KC.LABK),
+    Chord((KC.P, TSFT), KC.EQUAL),
+    Chord((KC.F, SCMD), KC.MINUS),
+    Chord((KC.W, RALT), KC.GRAVE),
+    Chord((FUND, TSFT), KC.TAB),
+
+    # RIGHT HAND
+    Chord((KC.K, KC.H), KC.RIGHT_PAREN),
+    Chord((NSFT, KC.M), KC.RBRC),
+    Chord((KC.J, KC.L), KC.RABK),
+    Chord((NSFT, KC.L), KC.QUOTE),
+    Chord((KC.U, ECMD), KC.BSLASH),
+    Chord((NSFT, KC.H), SPAC),
 ]
 
 mods_before_modmorph = set()
@@ -195,7 +195,7 @@ def MOD(names = {'DUMMY_KEY',}, default_kc = NONE, morphed_kc = NONE, triggers =
                             on_release=_released)
     return modmorph_key
 
-MOD({'ERAS'}, BSPC, DELT)
+MOD({'ERAS'}, BSPC, DELE)
 
 ERAS = KC.ERAS
 
@@ -209,7 +209,7 @@ keyboard.keymap = [
         NONE, NONE, NONE, NONE, NUMB, NONE, NONE, NONE, NONE, NONE,
         #right hand
         NONE, NONE, NONE, NONE, NONE, KC.J, KC.L, KC.U, KC.Y, SEMI,
-        NONE, NONE, NONE, NONE, NONE, KC.M, SHTN, CMDE, ALTI, CTLO,
+        NONE, NONE, NONE, NONE, NONE, KC.M, NSFT, ECMD, IALT, OCTL,
         NONE, NONE, NONE, NONE, NONE, KC.K, KC.H, COMM, PERI, SLAS,
         NONE, NONE, NONE, NONE, NONE, SPCN, NONE, NONE, NONE, NONE,
     ],
