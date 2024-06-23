@@ -6,10 +6,58 @@ from kmk.keys import KC, make_key # type: ignore
 from kmk.scanners import DiodeOrientation # type: ignore
 keyboard = KMKKeyboard()
 
+# mcu
+C0 = board.GP7
+C1 = board.GP6
+C2 = board.GP5
+C3 = board.GP4
+C4 = board.GP3
+C5 = board.GP28
+C6 = board.GP27
+C7 = board.GP26
+C8 = board.GP22
+C9 = board.GP20
+
+R0 = board.GP2
+R1 = board.GP8
+R2 = board.GP9
+R3 = board.GP12
+R4 = board.GP29
+R5 = board.GP23
+R6 = board.GP21
+R7 = board.GP16
+
+RED_LED = board.GP17
+
+# board definition
+keyboard.col_pins = [C0, C1, C2, C3, C4, C5, C6, C7, C8, C9]
+keyboard.row_pins = [R0, R1, R2, R3, R4, R5, R6, R7]
+keyboard.diode_orientation = DiodeOrientation.COL2ROW
+
 # layers
 from kmk.modules.layers import Layers # type: ignore
 layers = Layers()
 keyboard.modules.append(layers)
+
+# led
+from kmk.extensions.LED import LED # type: ignore
+from kmk.extensions.lock_status import LockStatus # type: ignore
+led = LED(led_pin=RED_LED)
+keyboard.extensions.append(led)
+
+class LEDLockStatus(LockStatus):
+    def set_lock_leds(self):
+        if self.get_caps_lock():
+            led.set_brightness(5)
+        else:
+            led.set_brightness(0)
+
+    def after_hid_send(self, sandbox):
+        super().after_hid_send(sandbox)  # Critically important. Do not forget
+        if self.report_updated:
+            self.set_lock_leds()
+
+keyboard.extensions.append(LEDLockStatus())
 
 # holdtap
 from kmk.modules.holdtap import HoldTap, HoldTapRepeat # type: ignore
@@ -32,31 +80,6 @@ combos.combo_term = 500
 from kmk.extensions.media_keys import MediaKeys # type: ignore
 mediaKeys = MediaKeys()
 keyboard.extensions.append(mediaKeys)
-
-C0 = board.GP7
-C1 = board.GP6
-C2 = board.GP5
-C3 = board.GP4
-C4 = board.GP3
-C5 = board.GP28
-C6 = board.GP27
-C7 = board.GP26
-C8 = board.GP22
-C9 = board.GP20
-
-R0 = board.GP2
-R1 = board.GP8
-R2 = board.GP9
-R3 = board.GP12
-R4 = board.GP29
-R5 = board.GP23
-R6 = board.GP21
-R7 = board.GP16
-
-# board definition
-keyboard.col_pins = [C0, C1, C2, C3, C4, C5, C6, C7, C8, C9]
-keyboard.row_pins = [R0, R1, R2, R3, R4, R5, R6, R7]
-keyboard.diode_orientation = DiodeOrientation.COL2ROW
 
 # keycode abbreviations
 # mods
