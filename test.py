@@ -1,11 +1,11 @@
-from kmk.handlers.sequences import simple_key_sequence
-from kmk.keys import KC
+from kmk.handlers.sequences import simple_key_sequence # type: ignore
+from kmk.keys import KC # type: ignore
 
 # *2 for split keyboards, which will typically manage twice the number of keys
 # of one side. Having this N too large will have no impact (maybe slower boot..)
-N = len(keyboard.col_pins) * len(keyboard.row_pins) * 2
+N = len(keyboard.col_pins) * len(keyboard.row_pins) * 2 # type: ignore
 
-keyboard.coord_mapping = list(range(N))
+keyboard.coord_mapping = list(range(N)) # type: ignore
 
 layer = []
 
@@ -22,7 +22,7 @@ for i in range(N):
             )
         )
     )
-keyboard.keymap = [layer]
+keyboard.keymap = [layer] # type: ignore
 
 if __name__ == '__main__':
-    keyboard.go()
+    keyboard.go() # type: ignore

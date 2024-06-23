@@ -48,7 +48,7 @@ keyboard.extensions.append(led)
 class LEDLockStatus(LockStatus):
     def set_lock_leds(self):
         if self.get_caps_lock():
-            led.set_brightness(5)
+            led.set_brightness(100)
         else:
             led.set_brightness(0)
 
@@ -59,22 +59,21 @@ class LEDLockStatus(LockStatus):
 
 keyboard.extensions.append(LEDLockStatus())
 
-# holdtap
-from kmk.modules.holdtap import HoldTap, HoldTapRepeat # type: ignore
-holdtap = HoldTap()
-keyboard.modules.append(holdtap)
-
-holdtap.tap_timeout = 300
-holdtap.tap_time = 250
-holdtap.prefer_hold = False
-holdtap.repeat = HoldTapRepeat.NONE
-
 # combos
 from kmk.modules.combos import Combos, Chord # type: ignore
 combos = Combos()
 keyboard.modules.append(combos)
 
 combos.combo_term = 500
+
+# holdtap
+from kmk.modules.holdtap import HoldTap, HoldTapRepeat # type: ignore
+holdtap = HoldTap()
+keyboard.modules.append(holdtap)
+
+holdtap.tap_time = None
+holdtap.prefer_hold = False
+holdtap.repeat = HoldTapRepeat.NONE
 
 # media
 from kmk.extensions.media_keys import MediaKeys # type: ignore
@@ -169,21 +168,32 @@ FUND = KC.HT(KC.D, FUNC)
 # combos
 combos.combos = [
     # LEFT HAND
-    Chord((FUND, KC.V), KC.LEFT_PAREN),
-    Chord((TSFT, KC.G), KC.LBRC),
-    Chord((KC.P, KC.B), KC.LABK),
-    Chord((KC.P, TSFT), KC.EQUAL),
-    Chord((KC.F, SCMD), KC.MINUS),
-    Chord((KC.W, RALT), KC.GRAVE),
-    Chord((FUND, TSFT), KC.TAB),
-
+    # (INDEX, MAJOR)
+    Chord((KC.P, KC.F), KC.EQUAL),
+    Chord((KC.C, FUND), KC.LEFT_PAREN),
+    # (MAJOR, RING)
+    Chord((KC.F, KC.W), KC.MINUS),
+    Chord((KC.C, KC.X), KC.LABK),
+    # (RING, MINOR)
+    Chord((KC.W, KC.Q), KC.GRAVE),
+    # (INDEX, MAJOR, RING)
+    Chord((FUND, KC.C, KC.X), KC.TAB),
+    # (INDEX, RING)
+    Chord((FUND, KC.X), KC.LCBR),
+    # (INDEX, MINOR)
+    Chord((FUND, KC.Z), KC.LBRC),
+    
     # RIGHT HAND
-    Chord((KC.K, KC.H), KC.RIGHT_PAREN),
-    Chord((NSFT, KC.M), KC.RBRC),
-    Chord((KC.J, KC.L), KC.RABK),
-    Chord((NSFT, KC.L), KC.QUOTE),
-    Chord((KC.U, ECMD), KC.BSLASH),
-    Chord((NSFT, KC.H), SPAC),
+    # (INDEX, MAJOR)
+    Chord((KC.L, KC.U), KC.QUOTE),
+    Chord((KC.H, KC.COMMA), KC.RIGHT_PAREN),
+    # (MAJOR, RING)
+    Chord((KC.U, KC.Y), KC.BSLASH),
+    Chord((KC.COMMA, KC.DOT), KC.RABK),
+    # (INDEX, RING)
+    Chord((KC.H, KC.DOT), KC.RCBR),
+    # (INDEX, MINOR)
+    Chord((KC.H, KC.SLASH), KC.RBRC),
 ]
 
 mods_before_modmorph = set()
