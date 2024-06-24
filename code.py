@@ -170,28 +170,32 @@ combos.combos = [
     # LEFT HAND
     # (INDEX, MAJOR)
     Chord((KC.P, KC.F), KC.EQUAL),
-    Chord((KC.C, FUND), KC.LEFT_PAREN),
+    Chord((TSFT, SCMD), KC.HT(KC.PLUS, KC.LCMD(KC.LSFT))),
+    Chord((FUND, KC.C), KC.LEFT_PAREN),
     # (MAJOR, RING)
     Chord((KC.F, KC.W), KC.MINUS),
-    Chord((KC.C, KC.X), KC.LABK),
+    Chord((SCMD, RALT), KC.HT(KC.UNDS, KC.LALT(KC.LSFT))),
+    Chord((KC.C, KC.X), KC.LCBR),
     # (RING, MINOR)
-    Chord((KC.W, KC.Q), KC.GRAVE),
+    Chord((KC.W, KC.Q), KC.TILDE),
+    Chord((ACTL, RALT), KC.HT(KC.GRAVE, KC.LCTL(KC.LALT))),
+    Chord((KC.Z, KC.X), KC.LABK),
     # (INDEX, MAJOR, RING)
-    Chord((FUND, KC.C, KC.X), KC.TAB),
-    # (INDEX, RING)
-    Chord((FUND, KC.X), KC.LCBR),
+    Chord((TSFT, SCMD, RALT), KC.TAB),
     # (INDEX, MINOR)
     Chord((FUND, KC.Z), KC.LBRC),
     
     # RIGHT HAND
     # (INDEX, MAJOR)
-    Chord((KC.L, KC.U), KC.QUOTE),
+    Chord((KC.L, KC.U), KC.DOUBLE_QUOTE),
+    Chord((NSFT, ECMD), KC.HT(KC.QUOTE, KC.RCMD(KC.RSFT))),
     Chord((KC.H, KC.COMMA), KC.RIGHT_PAREN),
     # (MAJOR, RING)
     Chord((KC.U, KC.Y), KC.BSLASH),
-    Chord((KC.COMMA, KC.DOT), KC.RABK),
-    # (INDEX, RING)
-    Chord((KC.H, KC.DOT), KC.RCBR),
+    Chord((ECMD, IALT), KC.HT(KC.PIPE, KC.RCMD(KC.RALT))),
+    Chord((KC.COMMA, KC.DOT), KC.RCBR),
+    # (RING, MINOR)
+    Chord((KC.DOT, KC.SLASH), KC.RABK),
     # (INDEX, MINOR)
     Chord((KC.H, KC.SLASH), KC.RBRC),
 ]
