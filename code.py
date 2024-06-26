@@ -175,13 +175,14 @@ combos.combos = [
     # (MAJOR, RING)
     Chord((KC.F, KC.W), KC.MINUS),
     Chord((SCMD, RALT), KC.HT(KC.UNDS, KC.LALT(KC.LSFT))),
-    Chord((KC.C, KC.X), KC.LCBR),
+    Chord((KC.X, KC.C), KC.LABK),
     # (RING, MINOR)
     Chord((KC.W, KC.Q), KC.TILDE),
     Chord((ACTL, RALT), KC.HT(KC.GRAVE, KC.LCTL(KC.LALT))),
-    Chord((KC.Z, KC.X), KC.LABK),
     # (INDEX, MAJOR, RING)
     Chord((TSFT, SCMD, RALT), KC.TAB),
+    # (INDEX, RING)
+    Chord((FUND, KC.X), KC.LCBR),
     # (INDEX, MINOR)
     Chord((FUND, KC.Z), KC.LBRC),
     
@@ -193,9 +194,10 @@ combos.combos = [
     # (MAJOR, RING)
     Chord((KC.U, KC.Y), KC.BSLASH),
     Chord((ECMD, IALT), KC.HT(KC.PIPE, KC.RCMD(KC.RALT))),
-    Chord((KC.COMMA, KC.DOT), KC.RCBR),
+    Chord((KC.DOT, KC.COMMA), KC.RABK),
     # (RING, MINOR)
-    Chord((KC.DOT, KC.SLASH), KC.RABK),
+    # (INDEX, RING)
+    Chord((KC.H, KC.DOT), KC.RCBR),
     # (INDEX, MINOR)
     Chord((KC.H, KC.SLASH), KC.RBRC),
 ]
