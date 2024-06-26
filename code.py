@@ -171,7 +171,8 @@ combos.combos = [
     # (INDEX, MAJOR)
     Chord((KC.P, KC.F), KC.EQUAL),
     Chord((TSFT, SCMD), KC.HT(KC.PLUS, KC.LCMD(KC.LSFT))),
-    Chord((FUND, KC.C), KC.LEFT_PAREN),
+    Chord((FUND, KC.C), KC.TAB),
+    Chord((FUND, SCMD), KC.LEFT_PAREN),
     # (MAJOR, RING)
     Chord((KC.F, KC.W), KC.MINUS),
     Chord((SCMD, RALT), KC.HT(KC.UNDS, KC.LALT(KC.LSFT))),
@@ -179,27 +180,25 @@ combos.combos = [
     # (RING, MINOR)
     Chord((KC.W, KC.Q), KC.TILDE),
     Chord((ACTL, RALT), KC.HT(KC.GRAVE, KC.LCTL(KC.LALT))),
-    # (INDEX, MAJOR, RING)
-    Chord((TSFT, SCMD, RALT), KC.TAB),
     # (INDEX, RING)
-    Chord((FUND, KC.X), KC.LCBR),
+    Chord((FUND, RALT), KC.LCBR),
     # (INDEX, MINOR)
-    Chord((FUND, KC.Z), KC.LBRC),
+    Chord((FUND, ACTL), KC.LBRC),
     
     # RIGHT HAND
     # (INDEX, MAJOR)
     Chord((KC.L, KC.U), KC.DOUBLE_QUOTE),
     Chord((NSFT, ECMD), KC.HT(KC.QUOTE, KC.RCMD(KC.RSFT))),
-    Chord((KC.H, KC.COMMA), KC.RIGHT_PAREN),
+    Chord((KC.H, ECMD), KC.RIGHT_PAREN),
+    Chord((KC.H, KC.COMMA), KC.SPACE),
     # (MAJOR, RING)
     Chord((KC.U, KC.Y), KC.BSLASH),
     Chord((ECMD, IALT), KC.HT(KC.PIPE, KC.RCMD(KC.RALT))),
     Chord((KC.DOT, KC.COMMA), KC.RABK),
-    # (RING, MINOR)
     # (INDEX, RING)
-    Chord((KC.H, KC.DOT), KC.RCBR),
+    Chord((KC.H, IALT), KC.RCBR),
     # (INDEX, MINOR)
-    Chord((KC.H, KC.SLASH), KC.RBRC),
+    Chord((KC.H, OCTL), KC.RBRC),
 ]
 
 mods_before_modmorph = set()
@@ -235,7 +234,6 @@ def MOD(names = {'DUMMY_KEY',}, default_kc = NONE, morphed_kc = NONE, triggers =
     return modmorph_key
 
 MOD({'ERAS'}, BSPC, DELE)
-
 ERAS = KC.ERAS
 
 keyboard.keymap = [
