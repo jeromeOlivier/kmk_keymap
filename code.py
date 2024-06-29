@@ -169,8 +169,8 @@ FUND = KC.HT(KC.D, FUNC)
 combos.combos = [
     # LEFT HAND
     # (INDEX, MAJOR)
-    Chord((KC.P, KC.F), KC.EQUAL),
-    Chord((TSFT, SCMD), KC.HT(KC.PLUS, KC.LCMD(KC.LSFT))),
+    Chord((KC.P, KC.F), KC.PLUS),
+    Chord((TSFT, SCMD), KC.HT(KC.EQUAL, KC.LCMD(KC.LSFT))),
     Chord((FUND, KC.C), KC.TAB),
     Chord((FUND, SCMD), KC.LEFT_PAREN),
     # (MAJOR, RING)
