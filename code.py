@@ -171,6 +171,8 @@ combos.combos = [
     Chord((SFTN, CMDE), KC.HT(KC.QUOTE, KC.RCMD(KC.RSFT))),
     Chord((KC.H, CMDE), KC.RIGHT_PAREN),
     Chord((KC.H, KC.COMMA), KC.SPACE),
+    Chord((NUM7, NUM8), KC.COMMA),
+    Chord((NUM8, NUM9), KC.DOT),
     # (MAJOR, RING)
     Chord((KC.U, KC.Y), KC.BSLASH),
     Chord((CMDE, ALTI), KC.HT(KC.PIPE, KC.RCMD(KC.RALT))),
