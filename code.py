@@ -27,7 +27,7 @@ R5 = board.GP23
 R6 = board.GP21
 R7 = board.GP16
 
-RED_LED = board.GP17
+# RED_LED = board.GP17
 
 # board definition
 keyboard.col_pins = [C0, C1, C2, C3, C4, C5, C6, C7, C8, C9]
@@ -38,26 +38,6 @@ keyboard.diode_orientation = DiodeOrientation.COL2ROW
 from kmk.modules.layers import Layers # type: ignore
 layers = Layers()
 keyboard.modules.append(layers)
-
-# led
-from kmk.extensions.LED import LED # type: ignore
-from kmk.extensions.lock_status import LockStatus # type: ignore
-led = LED(led_pin=RED_LED)
-keyboard.extensions.append(led)
-
-class LEDLockStatus(LockStatus):
-    def set_lock_leds(self):
-        if self.get_caps_lock():
-            led.set_brightness(100)
-        else:
-            led.set_brightness(0)
-
-    def after_hid_send(self, sandbox):
-        super().after_hid_send(sandbox)  # Critically important. Do not forget
-        if self.report_updated:
-            self.set_lock_leds()
-
-keyboard.extensions.append(LEDLockStatus())
 
 # combos
 from kmk.modules.combos import Combos, Chord # type: ignore
@@ -152,17 +132,17 @@ SYMB = KC.MO(4)
 TRNS = KC.TRNS
 
 # hold taps (HOME ROW MOD)
-ACTL = KC.HT(KC.A, LCTL)
-RALT = KC.HT(KC.R, LALT)
-SCMD = KC.HT(KC.S, LCMD)
-TSFT = KC.HT(KC.T, LSFT)
+CTLA = KC.HT(KC.A, LCTL)
+ALTR = KC.HT(KC.R, LALT)
+CMDS = KC.HT(KC.S, LCMD)
+SFTT = KC.HT(KC.T, LSFT)
 
-NSFT = KC.HT(KC.N, RSFT)
-ECMD = KC.HT(KC.E, RCMD)
-IALT = KC.HT(KC.I, RALT)
-OCTL = KC.HT(KC.O, RCTL)
+SFTN = KC.HT(KC.N, RSFT)
+CMDE = KC.HT(KC.E, RCMD)
+ALTI = KC.HT(KC.I, RALT)
+CTLO = KC.HT(KC.O, RCTL)
 
-SPCN = KC.HT(SPAC, NAVI)
+SPNV = KC.HT(SPAC, NAVI)
 FUND = KC.HT(KC.D, FUNC)
 
 # combos
@@ -170,35 +150,35 @@ combos.combos = [
     # LEFT HAND
     # (INDEX, MAJOR)
     Chord((KC.P, KC.F), KC.PLUS),
-    Chord((TSFT, SCMD), KC.HT(KC.EQUAL, KC.LCMD(KC.LSFT))),
+    Chord((SFTT, CMDS), KC.HT(KC.EQUAL, KC.LCMD(KC.LSFT))),
     Chord((FUND, KC.C), KC.TAB),
-    Chord((FUND, SCMD), KC.LEFT_PAREN),
+    Chord((FUND, CMDS), KC.LEFT_PAREN),
     # (MAJOR, RING)
     Chord((KC.F, KC.W), KC.MINUS),
-    Chord((SCMD, RALT), KC.HT(KC.UNDS, KC.LALT(KC.LSFT))),
+    Chord((CMDS, ALTR), KC.HT(KC.UNDS, KC.LALT(KC.LCMD))),
     Chord((KC.X, KC.C), KC.LABK),
     # (RING, MINOR)
     Chord((KC.W, KC.Q), KC.TILDE),
-    Chord((ACTL, RALT), KC.HT(KC.GRAVE, KC.LCTL(KC.LALT))),
+    Chord((CTLA, ALTR), KC.HT(KC.GRAVE, KC.LCTL(KC.LALT))),
     # (INDEX, RING)
-    Chord((FUND, RALT), KC.LCBR),
+    Chord((FUND, ALTR), KC.LCBR),
     # (INDEX, MINOR)
-    Chord((FUND, ACTL), KC.LBRC),
+    Chord((FUND, CTLA), KC.LBRC),
     
     # RIGHT HAND
     # (INDEX, MAJOR)
     Chord((KC.L, KC.U), KC.DOUBLE_QUOTE),
-    Chord((NSFT, ECMD), KC.HT(KC.QUOTE, KC.RCMD(KC.RSFT))),
-    Chord((KC.H, ECMD), KC.RIGHT_PAREN),
+    Chord((SFTN, CMDE), KC.HT(KC.QUOTE, KC.RCMD(KC.RSFT))),
+    Chord((KC.H, CMDE), KC.RIGHT_PAREN),
     Chord((KC.H, KC.COMMA), KC.SPACE),
     # (MAJOR, RING)
     Chord((KC.U, KC.Y), KC.BSLASH),
-    Chord((ECMD, IALT), KC.HT(KC.PIPE, KC.RCMD(KC.RALT))),
+    Chord((CMDE, ALTI), KC.HT(KC.PIPE, KC.RCMD(KC.RALT))),
     Chord((KC.DOT, KC.COMMA), KC.RABK),
     # (INDEX, RING)
-    Chord((KC.H, IALT), KC.RCBR),
+    Chord((KC.H, ALTI), KC.RCBR),
     # (INDEX, MINOR)
-    Chord((KC.H, OCTL), KC.RBRC),
+    Chord((KC.H, CTLO), KC.RBRC),
 ]
 
 mods_before_modmorph = set()
@@ -241,14 +221,14 @@ keyboard.keymap = [
     [
         #left hand
         KC.Q, KC.W, KC.F, KC.P, KC.B, NONE, NONE, NONE, NONE, NONE,
-        ACTL, RALT, SCMD, TSFT, KC.G, NONE, NONE, NONE, NONE, NONE,
+        CTLA, ALTR, CMDS, SFTT, KC.G, NONE, NONE, NONE, NONE, NONE,
         KC.Z, KC.X, KC.C, FUND, KC.V, NONE, NONE, NONE, NONE, NONE,
         NONE, NONE, NONE, NONE, NUMB, NONE, NONE, NONE, NONE, NONE,
         #right hand
         NONE, NONE, NONE, NONE, NONE, KC.J, KC.L, KC.U, KC.Y, SEMI,
-        NONE, NONE, NONE, NONE, NONE, KC.M, NSFT, ECMD, IALT, OCTL,
+        NONE, NONE, NONE, NONE, NONE, KC.M, SFTN, CMDE, ALTI, CTLO,
         NONE, NONE, NONE, NONE, NONE, KC.K, KC.H, COMM, PERI, SLAS,
-        NONE, NONE, NONE, NONE, NONE, SPCN, NONE, NONE, NONE, NONE,
+        NONE, NONE, NONE, NONE, NONE, SPNV, NONE, NONE, NONE, NONE,
     ],
     # Numbers
     [
