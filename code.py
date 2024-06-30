@@ -1,4 +1,5 @@
 import board # type: ignore
+import pins as p
 
 # keyboard
 from kmk.kmk_keyboard import KMKKeyboard # type: ignore
@@ -6,32 +7,9 @@ from kmk.keys import KC, make_key # type: ignore
 from kmk.scanners import DiodeOrientation # type: ignore
 keyboard = KMKKeyboard()
 
-# mcu
-C0 = board.GP7
-C1 = board.GP6
-C2 = board.GP5
-C3 = board.GP4
-C4 = board.GP3
-C5 = board.GP28
-C6 = board.GP27
-C7 = board.GP26
-C8 = board.GP22
-C9 = board.GP20
-
-R0 = board.GP2
-R1 = board.GP8
-R2 = board.GP9
-R3 = board.GP12
-R4 = board.GP29
-R5 = board.GP23
-R6 = board.GP21
-R7 = board.GP16
-
-# RED_LED = board.GP17
-
 # board definition
-keyboard.col_pins = [C0, C1, C2, C3, C4, C5, C6, C7, C8, C9]
-keyboard.row_pins = [R0, R1, R2, R3, R4, R5, R6, R7]
+keyboard.col_pins = [p.C0, p.C1, p.C2, p.C3, p.C4, p.C5, p.C6, p.C7, p.C8, p.C9]
+keyboard.row_pins = [p.R0, p.R1, p.R2, p.R3, p.R4, p.R5, p.R6, p.R7]
 keyboard.diode_orientation = DiodeOrientation.COL2ROW
 
 # layers
@@ -183,40 +161,33 @@ combos.combos = [
     Chord((KC.H, CTLO), KC.RBRC),
 ]
 
-mods_before_modmorph = set()
-def MOD(names = {'DUMMY_KEY',}, default_kc = NONE, morphed_kc = NONE, triggers = {LSFT, RSFT}):
+# mod morph
+def MOD(names={'DUMMY_KEY'}, default_kc=NONE, morphed_kc=NONE, triggers={LSFT, RSFT}):
+    mods_before_modmorph = set()  # Define the variable before using it as a nonlocal variable
     def _pressed(key, state, KC, *args, **kwargs):
-        global mods_before_modmorph
-        mods_before_modmorph = triggers.intersection(state.keys_pressed)
-        # if a trigger is held, morph key
+        nonlocal mods_before_modmorph
+        mods_before_modmorph = triggers & state.keys_pressed
         if mods_before_modmorph:
-            state._send_hid()
-            for mod_kc in mods_before_modmorph:
-                # discard triggering mods so morphed key is unaffected by them
-                state.keys_pressed.discard(mod_kc)
+            state.keys_pressed -= mods_before_modmorph
             state.keys_pressed.add(morphed_kc)
-            state.hid_pending = True
-            return state
-        # else return default keycode
-        state.keys_pressed.add(default_kc)
+        else:
+            state.keys_pressed.add(default_kc)
         state.hid_pending = True
-        return state
+
     def _released(key, state, KC, *args, **kwargs):
-        if {morphed_kc,}.intersection(state.keys_pressed):
-            state.keys_pressed.discard(morphed_kc)
-            for mod_kc in mods_before_modmorph:
-                # re-add previously discarded shift so normal typing isn't impacted
-                state.keys_pressed.add(mod_kc)
+        nonlocal mods_before_modmorph
+        if morphed_kc in state.keys_pressed:
+            state.keys_pressed.remove(morphed_kc)
+            state.keys_pressed |= mods_before_modmorph
         else:
             state.keys_pressed.discard(default_kc)
         state.hid_pending = True
-        return state
-    modmorph_key = make_key(names=names, on_press=_pressed,
-                            on_release=_released)
-    return modmorph_key
 
-MOD({'ERAS'}, BSPC, DELE)
-ERAS = KC.ERAS
+    return make_key(names=names, on_press=_pressed, on_release=_released)
+
+ERAS = MOD({'ERAS'}, BSPC, DELE)
+MDUP = MOD({'MDUP'}, VLUP, KC.F15)
+MDDN = MOD({'MDDN'}, VLDN, KC.F14)
 
 keyboard.keymap = [
     # Alphas
@@ -249,8 +220,8 @@ keyboard.keymap = [
     [
         #left hand
         ESCP, NONE, ARUP, NONE, NONE, NONE, NONE, NONE, NONE, NONE,
-        VLUP, ARLF, ARDN, ARRT, NONE, NONE, NONE, NONE, NONE, NONE,
-        VLDN, NONE, NONE, NONE, NONE, NONE, NONE, NONE, NONE, NONE,
+        MDUP, ARLF, ARDN, ARRT, NONE, NONE, NONE, NONE, NONE, NONE,
+        MDDN, NONE, NONE, NONE, NONE, NONE, NONE, NONE, NONE, NONE,
         NONE, NONE, NONE, NONE, CAPS, NONE, NONE, NONE, NONE, NONE,
         #right hand
         NONE, NONE, NONE, NONE, NONE, NONE, NONE, NONE, NONE, NONE,
