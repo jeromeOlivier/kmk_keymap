@@ -1,28 +1,36 @@
-import board # type: ignore
-import pins as p
-
 # keyboard
 from kmk.kmk_keyboard import KMKKeyboard # type: ignore
 from kmk.keys import KC, make_key # type: ignore
+from keys import *
+
+# board definition
+import pins as p
 from kmk.scanners import DiodeOrientation # type: ignore
 keyboard = KMKKeyboard()
 
-# board definition
 keyboard.col_pins = [p.C0, p.C1, p.C2, p.C3, p.C4, p.C5, p.C6, p.C7, p.C8, p.C9]
 keyboard.row_pins = [p.R0, p.R1, p.R2, p.R3, p.R4, p.R5, p.R6, p.R7]
 keyboard.diode_orientation = DiodeOrientation.COL2ROW
+
+# media
+from kmk.extensions.media_keys import MediaKeys # type: ignore
+mediaKeys = MediaKeys()
+keyboard.extensions.append(mediaKeys)
+
+VLUP = KC.AUDIO_VOL_UP
+VLDN = KC.AUDIO_VOL_DOWN
 
 # layers
 from kmk.modules.layers import Layers # type: ignore
 layers = Layers()
 keyboard.modules.append(layers)
 
-# combos
-from kmk.modules.combos import Combos, Chord # type: ignore
-combos = Combos()
-keyboard.modules.append(combos)
-
-combos.combo_term = 500
+# layer definitions
+NUMB = KC.MO(1)
+NAVI = KC.MO(2)
+FUNC = KC.MO(3)
+SYMB = KC.MO(4)
+TRNS = KC.TRNS
 
 # holdtap
 from kmk.modules.holdtap import HoldTap, HoldTapRepeat # type: ignore
@@ -32,82 +40,6 @@ keyboard.modules.append(holdtap)
 holdtap.tap_time = None
 holdtap.prefer_hold = False
 holdtap.repeat = HoldTapRepeat.NONE
-
-# media
-from kmk.extensions.media_keys import MediaKeys # type: ignore
-mediaKeys = MediaKeys()
-keyboard.extensions.append(mediaKeys)
-
-# keycode abbreviations
-# mods
-LSFT = KC.LSFT
-RSFT = KC.RSFT
-LCMD = KC.LCMD
-RCMD = KC.RCMD
-LALT = KC.LALT
-RALT = KC.RALT
-LCTL = KC.LCTL
-RCTL = KC.RCTL
-# misc
-ENTR = KC.ENT
-SPAC = KC.SPACE
-COMM = KC.COMMA
-SEMI = KC.SCOLON
-SLAS = KC.SLASH
-PERI = KC.DOT
-BSPC = KC.BSPC
-DELE = KC.DEL
-CAPS = KC.CAPS
-ESCP = KC.ESCAPE
-NONE = KC.NO
-# numbers
-NUM1 = KC.N1
-NUM2 = KC.N2
-NUM3 = KC.N3
-NUM4 = KC.N4
-NUM5 = KC.N5
-NUM6 = KC.N6
-NUM7 = KC.N7
-NUM8 = KC.N8
-NUM9 = KC.N9
-NUM0 = KC.N0
-# symbols
-BANG = KC.EXLM
-ROBA = KC.AT
-HASH = KC.HASH
-BUCK = KC.DLR
-PERC = KC.PERC
-CIRC = KC.CIRC
-AMPR = KC.AMPR
-STAR = KC.ASTR
-# navigation
-ARUP = KC.UP
-ARLF = KC.LEFT
-ARRT = KC.RIGHT
-ARDN = KC.DOWN
-# function
-FN01 = KC.F1
-FN02 = KC.F2
-FN03 = KC.F3
-FN04 = KC.F4
-FN05 = KC.F5
-FN06 = KC.F6
-FN07 = KC.F7
-FN08 = KC.F8
-FN09 = KC.F9
-FN10 = KC.F10
-FN11 = KC.F11
-FN12 = KC.F12
-# media
-VLUP = KC.AUDIO_VOL_UP
-VLDN = KC.AUDIO_VOL_DOWN
-
-# layer definitions
-NUMB = KC.MO(1)
-NAVI = KC.MO(2)
-FUNC = KC.MO(3)
-SYMB = KC.MO(4)
-TRNS = KC.TRNS
 
 # hold taps (HOME ROW MOD)
 CTLA = KC.HT(KC.A, LCTL)
@@ -122,6 +54,11 @@ CTLO = KC.HT(KC.O, RCTL)
 
 SPNV = KC.HT(SPAC, NAVI)
 FUND = KC.HT(KC.D, FUNC)
+
+# combos
+from kmk.modules.combos import Combos, Chord # type: ignore
+combos = Combos()
+keyboard.modules.append(combos)
 
 # combos
 combos.combos = [
