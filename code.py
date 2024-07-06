@@ -77,8 +77,10 @@ combos.combos = [
     Chord((CTLA, ALTR), KC.HT(KC.GRAVE, KC.LCTL(KC.LALT))),
     # (INDEX, RING)
     Chord((FUND, ALTR), KC.LCBR),
+    Chord((SFTT, ALTR), KC.LCBR),
     # (INDEX, MINOR)
     Chord((FUND, CTLA), KC.LBRC),
+    Chord((SFTT, CTLA), KC.LBRC),
     
     # RIGHT HAND
     # (INDEX, MAJOR)
@@ -94,8 +96,10 @@ combos.combos = [
     Chord((KC.DOT, KC.COMMA), KC.RABK),
     # (INDEX, RING)
     Chord((KC.H, ALTI), KC.RCBR),
+    Chord((SFTN, ALTI), KC.RCBR),
     # (INDEX, MINOR)
     Chord((KC.H, CTLO), KC.RBRC),
+    Chord((SFTN, CTLO), KC.RBRC),
 ]
 
 # mod morph
