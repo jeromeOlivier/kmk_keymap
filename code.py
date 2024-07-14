@@ -107,6 +107,7 @@ def MOD(names={'DUMMY_KEY'}, default_kc=NONE, morphed_kc=NONE, triggers={LSFT, R
     mods_before_modmorph = set()  # Define the variable before using it as a nonlocal variable
     def _pressed(key, state, KC, *args, **kwargs):
         nonlocal mods_before_modmorph
+        print(f"!!!!! Pressed: mods_before_modmorph={mods_before_modmorph}, keys_pressed={state.keys_pressed}")
         mods_before_modmorph = triggers & state.keys_pressed
         if mods_before_modmorph:
             state.keys_pressed -= mods_before_modmorph
@@ -117,11 +118,16 @@ def MOD(names={'DUMMY_KEY'}, default_kc=NONE, morphed_kc=NONE, triggers={LSFT, R
 
     def _released(key, state, KC, *args, **kwargs):
         nonlocal mods_before_modmorph
+        print(f"!!!!! Released: mods_before_modmorph={mods_before_modmorph}, keys_pressed={state.keys_pressed}")
         if morphed_kc in state.keys_pressed:
             state.keys_pressed.remove(morphed_kc)
             state.keys_pressed |= mods_before_modmorph
         else:
             state.keys_pressed.discard(default_kc)
+        state.hid_pending = True
+        # Restore any modifier keys that were active before pressing ERAS
+        if mods_before_modmorph:
+            state.keys_pressed |= mods_before_modmorph
         state.hid_pending = True
 
     return make_key(names=names, on_press=_pressed, on_release=_released)
