@@ -103,38 +103,38 @@ combos.combos = [
 ]
 
 # mod morph
-def MOD(names={'DUMMY_KEY'}, default_kc=NONE, morphed_kc=NONE, triggers={LSFT, RSFT}):
-    mods_before_modmorph = set()  # Define the variable before using it as a nonlocal variable
-    def _pressed(key, state, KC, *args, **kwargs):
-        nonlocal mods_before_modmorph
-        print(f"!!!!! Pressed: mods_before_modmorph={mods_before_modmorph}, keys_pressed={state.keys_pressed}")
-        mods_before_modmorph = triggers & state.keys_pressed
-        if mods_before_modmorph:
-            state.keys_pressed -= mods_before_modmorph
-            state.keys_pressed.add(morphed_kc)
-        else:
-            state.keys_pressed.add(default_kc)
-        state.hid_pending = True
+# def MOD(names={'DUMMY_KEY'}, default_kc=NONE, morphed_kc=NONE, triggers={LSFT, RSFT}):
+#     mods_before_modmorph = set()  # Define the variable before using it as a nonlocal variable
+#     def _pressed(key, state, KC, *args, **kwargs):
+#         nonlocal mods_before_modmorph
+#         print(f"!!!!! Pressed: mods_before_modmorph={mods_before_modmorph}, keys_pressed={state.keys_pressed}")
+#         mods_before_modmorph = triggers & state.keys_pressed
+#         if mods_before_modmorph:
+#             state.keys_pressed -= mods_before_modmorph
+#             state.keys_pressed.add(morphed_kc)
+#         else:
+#             state.keys_pressed.add(default_kc)
+#         state.hid_pending = True
 
-    def _released(key, state, KC, *args, **kwargs):
-        nonlocal mods_before_modmorph
-        print(f"!!!!! Released: mods_before_modmorph={mods_before_modmorph}, keys_pressed={state.keys_pressed}")
-        if morphed_kc in state.keys_pressed:
-            state.keys_pressed.remove(morphed_kc)
-            state.keys_pressed |= mods_before_modmorph
-        else:
-            state.keys_pressed.discard(default_kc)
-        state.hid_pending = True
-        # Restore any modifier keys that were active before pressing ERAS
-        if mods_before_modmorph:
-            state.keys_pressed |= mods_before_modmorph
-        state.hid_pending = True
+#     def _released(key, state, KC, *args, **kwargs):
+#         nonlocal mods_before_modmorph
+#         print(f"!!!!! Released: mods_before_modmorph={mods_before_modmorph}, keys_pressed={state.keys_pressed}")
+#         if morphed_kc in state.keys_pressed:
+#             state.keys_pressed.remove(morphed_kc)
+#             state.keys_pressed |= mods_before_modmorph
+#         else:
+#             state.keys_pressed.discard(default_kc)
+#         state.hid_pending = True
+#         # Restore any modifier keys that were active before pressing ERAS
+#         if mods_before_modmorph:
+#             state.keys_pressed |= mods_before_modmorph
+#         state.hid_pending = True
 
-    return make_key(names=names, on_press=_pressed, on_release=_released)
+#     return make_key(names=names, on_press=_pressed, on_release=_released)
 
-ERAS = MOD({'ERAS'}, BSPC, DELE)
-MDUP = MOD({'MDUP'}, VLUP, KC.F15)
-MDDN = MOD({'MDDN'}, VLDN, KC.F14)
+# ERAS = MOD({'ERAS'}, BSPC, DELE)
+# MDUP = MOD({'MDUP'}, VLUP, KC.F15)
+# MDDN = MOD({'MDDN'}, VLDN, KC.F14)
 
 keyboard.keymap = [
     # Alphas
@@ -158,7 +158,7 @@ keyboard.keymap = [
         NONE, NONE, NONE, NONE, NONE, NONE, NONE, NONE, NONE, NONE,
         NONE, NONE, NONE, NONE, TRNS, NONE, NONE, NONE, NONE, NONE,
         #right hand
-        NONE, NONE, NONE, NONE, NONE, NONE, NUM1, NUM2, NUM3, ERAS,
+        NONE, NONE, NONE, NONE, NONE, NONE, NUM1, NUM2, NUM3, BSPC,
         NONE, NONE, NONE, NONE, NONE, NONE, NUM4, NUM5, NUM6, NUM0,
         NONE, NONE, NONE, NONE, NONE, NONE, NUM7, NUM8, NUM9, NONE,
         NONE, NONE, NONE, NONE, NONE, ENTR, NONE, NONE, NONE, NONE,
@@ -167,8 +167,8 @@ keyboard.keymap = [
     [
         #left hand
         ESCP, NONE, ARUP, NONE, NONE, NONE, NONE, NONE, NONE, NONE,
-        MDUP, ARLF, ARDN, ARRT, NONE, NONE, NONE, NONE, NONE, NONE,
-        MDDN, NONE, NONE, NONE, NONE, NONE, NONE, NONE, NONE, NONE,
+        VLUP, ARLF, ARDN, ARRT, NONE, NONE, NONE, NONE, NONE, NONE,
+        VLDN, NONE, NONE, NONE, NONE, NONE, NONE, NONE, NONE, NONE,
         NONE, NONE, NONE, NONE, CAPS, NONE, NONE, NONE, NONE, NONE,
         #right hand
         NONE, NONE, NONE, NONE, NONE, NONE, NONE, NONE, NONE, NONE,
